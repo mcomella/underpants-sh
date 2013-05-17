@@ -8,7 +8,7 @@ FFILE=$DATA_DIR/food-warnings
 PFILE=$DATA_DIR/printer-warnings
 
 function get_count_into_tmp {
-  cat $1 | cut -f3 -d' ' | sort | uniq -c | sed 's/^\s*//' > $2
+  cut --fields=3 --delimiter=' ' $1 | sort | uniq --count | sed 's/^\s*//' > $2
 }
 
 FTMP=`mktemp`; PTMP=`mktemp`; JOIN_TMP=`mktemp`
@@ -25,6 +25,6 @@ for line in "`join -j 2 $FTMP $PTMP -v 2`"; do
 done
 
 # TODO: Sort on arg.
-sort -nrk2,2 $JOIN_TMP
+sort --numeric-sort --reverse --key=2,2 $JOIN_TMP
 
 rm $FTMP $PTMP $JOIN_TMP
