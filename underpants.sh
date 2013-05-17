@@ -7,11 +7,13 @@ DATA_DIR=/admin/consult/data/
 FFILE=$DATA_DIR/food-warnings
 PFILE=$DATA_DIR/printer-warnings
 
-FTMP=`mktemp`; PTMP=`mktemp`; JOIN_TMP=`mktemp`
+function get_count_into_tmp {
+  cat $1 | cut -f3 -d' ' | sort | uniq -c | sed 's/^\s*//' > $2
+}
 
-# TODO: Move this to a function.
-cat $FFILE | cut -f3 -d' ' | sort | uniq -c | sed 's/^\s*//'  > $FTMP
-cat $PFILE | cut -f3 -d' ' | sort | uniq -c | sed 's/^\s*//' > $PTMP
+FTMP=`mktemp`; PTMP=`mktemp`; JOIN_TMP=`mktemp`
+get_count_into_tmp $FFILE $FTMP
+get_count_into_tmp $PFILE $PTMP
 
 # Join with default values of 0 on unjoinable pairs.
 join -j 2 $FTMP $PTMP > $JOIN_TMP
