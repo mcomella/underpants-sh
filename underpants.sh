@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+# TODO: Add usage.
 # TODO: Add headers and format output.
 # TODO: Get data for current consultants only (with arg).
 
